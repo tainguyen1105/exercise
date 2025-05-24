@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strings"
 )
 
@@ -25,4 +26,14 @@ func (sl shoppingList) toString() string {
 
 func (sl shoppingList) saveToFile(filename string) error {
 	return ioutil.WriteFile(filename,[]byte(sl.toString()),0666)
+}
+
+func newShoppingListFromFile(filename string) shoppingList {
+	bs, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("Error:",err)
+		os.Exit(1)
+	}
+	s := strings.Split(string(bs),",")
+	return shoppingList(s)
 }
